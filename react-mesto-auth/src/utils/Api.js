@@ -10,6 +10,7 @@ class Api {
     const res = await fetch(`${this.baseUrl}/cards`, {
       headers: this.headers,
       method: "GET",
+      credentials: 'include',
     });
     return this._getResposeData(res);
   }
@@ -18,6 +19,7 @@ class Api {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
       method: "GET",
+      credentials: 'include',
     });
     return this._getResposeData(res);
   }
@@ -26,6 +28,7 @@ class Api {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
       method: "PATCH",
+      credentials: 'include',
       body: JSON.stringify({
         name,
         about,
@@ -38,6 +41,7 @@ class Api {
     const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
       headers: this.headers,
       method: "PATCH",
+      credentials: 'include',
       body: JSON.stringify({
         avatar,
       }),
@@ -49,6 +53,7 @@ class Api {
     const res = await fetch(`${this.baseUrl}/cards`, {
       headers: this.headers,
       method: "POST",
+      credentials: 'include',
       body: JSON.stringify({
         name,
         link,
@@ -61,21 +66,25 @@ class Api {
     const res = await fetch(`${this.baseUrl}/cards/${_id}`, {
       headers: this.headers,
       method: "DELETE",
+      credentials: 'include',
     });
     return this._getResposeData(res);
   }
 
   async changeLikeCardStatus(_id, newLikeStatus) {
     let res;
+    console.log(newLikeStatus)
     if (newLikeStatus) {
       res = await fetch(`${this.baseUrl}/cards/${_id}/likes`, {
         headers: this.headers,
         method: "PUT",
+        credentials: 'include',
       });
     } else {
       res = await fetch(`${this.baseUrl}/cards/${_id}/likes`, {
         headers: this.headers,
         method: "DELETE",
+        credentials: 'include',
       });
     }
     return this._getResposeData(res);

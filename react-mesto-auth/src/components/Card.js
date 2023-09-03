@@ -4,8 +4,8 @@ import { useContext } from "react";
 export const Card = ({ cardInfo, onCardClick,onCardLike,onCardDelete }) => {
   const currentUserInfo = useContext(CurrentUserContext);
 
-  const isOwn = cardInfo.owner._id === currentUserInfo._id;
-  const isLiked = cardInfo.likes.some((i) => i._id === currentUserInfo._id);
+  const isOwn = cardInfo.owner === currentUserInfo._id;
+  const isLiked = cardInfo.likes.some((i) => i === currentUserInfo._id);
 
   const cardLikeButtonClassName = `element__like-button ${
     isLiked && "element__like-button_checked"

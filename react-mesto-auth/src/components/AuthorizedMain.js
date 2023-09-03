@@ -11,8 +11,7 @@ import { AddPlacePopup } from "./Popups/AddPlacePopup";
 import { ApprovePopup } from "./Popups/ApprovePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-
-export const AuthorizedMain = ({handleCurrentUserInfoChange,handleTokenCheck}) => {
+export const AuthorizedMain = ({ handleCurrentUserInfoChange, handleTokenCheck }) => {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -47,12 +46,10 @@ export const AuthorizedMain = ({handleCurrentUserInfoChange,handleTokenCheck}) =
   }, [setCards]);
 
   const handleCardLike = async (card) => {
-    const isLiked = card.likes.some((i) => i._id === currentUserInfo._id);
+    const isLiked = card.likes.some((i) => i === currentUserInfo._id);
     try {
       const newCard = await api.changeLikeCardStatus(card._id, !isLiked);
-      setCards((cards) =>
-        cards.map((card) => (card._id === newCard._id ? newCard : card))
-      );
+      setCards((cards) => cards.map((card) => (card._id === newCard._id ? newCard : card)));
     } catch (err) {
       console.log("Не удалось изменить лайк", err);
     }
@@ -69,9 +66,7 @@ export const AuthorizedMain = ({handleCurrentUserInfoChange,handleTokenCheck}) =
     try {
       const response = await api.deleteCard(card._id);
       if (response.message === "Пост удалён") {
-        setCards((oldCards) =>
-          oldCards.filter((oldCard) => oldCard._id !== card._id)
-        );
+        setCards((oldCards) => oldCards.filter((oldCard) => oldCard._id !== card._id));
         closeAllPopups();
       }
     } catch (err) {
@@ -101,8 +96,8 @@ export const AuthorizedMain = ({handleCurrentUserInfoChange,handleTokenCheck}) =
 
   const handleAddPlaceSubmit = async ({ name, link, resetForm }) => {
     try {
-      const newCard = await api.postCard({ name, link });
-      setCards([newCard, ...cards]);
+      const { card } = await api.postCard({ name, link });
+      setCards([card, ...cards]);
       resetForm();
       closeAllPopups();
     } catch (err) {
@@ -138,24 +133,27 @@ export const AuthorizedMain = ({handleCurrentUserInfoChange,handleTokenCheck}) =
     setSelectedCard(card);
   };
 
+  const onExit = () => {
+    localStorage.removeItem("token");
+    setApprovePopupOpen(false);
+    handleTokenCheck();
+  };
 
-  const onExit = () =>{
-    localStorage.removeItem('token');
-    setApprovePopupOpen(false)
-    handleTokenCheck()
-  }
-
-  const approveExit= () =>{
-    setApprovePopupOpen(true)
-    setApproveCallback(()=>()=>onExit())
-  }
+  const approveExit = () => {
+    setApprovePopupOpen(true);
+    setApproveCallback(() => () => onExit());
+  };
 
   return (
     <>
       <Header>
-        <div style={{display: "flex", marginRight: 'clamp(0px,calc(27px - (100vw - 880px)/2),27px)'}}>
-          <p style={{marginRight: '24px'}}>{currentUserInfo.email}</p>
-          <p className="link" onClick={approveExit} style={{}}>{"Выйти"}</p>
+        <div
+          style={{ display: "flex", marginRight: "clamp(0px,calc(27px - (100vw - 880px)/2),27px)" }}
+        >
+          <p style={{ marginRight: "24px" }}>{currentUserInfo.email}</p>
+          <p className="link" onClick={approveExit} style={{}}>
+            {"Выйти"}
+          </p>
         </div>
       </Header>
       <Main

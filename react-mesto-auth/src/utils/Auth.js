@@ -21,6 +21,7 @@ class Auth {
   async authorize({ email, password }) {
     const res = await fetch(`${this.baseUrl}/signin`, {
       headers: this.headers,
+      credentials: 'include',
       method: "POST",
       body: JSON.stringify({
         email,
@@ -37,6 +38,7 @@ class Auth {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       headers: {...this.headers, "Authorization" : `Bearer ${token}`},
       method: "GET",
+      credentials: 'include',
     });
     const data = await this._getResposeData(res);
     return data
