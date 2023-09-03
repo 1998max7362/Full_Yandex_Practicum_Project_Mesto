@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.disable("x-powered-by");
 app.use(limiter);
 // app.use(helmet);
-app.use(corsAllow);
+app.all("*", corsAllow);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
